@@ -24,6 +24,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L /usr/local/lib -pthread" )
 
 project(remote-debug-for-intel-fpga)
+set(VERSION "1.0.1")
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/protodrv_api)
 add_subdirectory(${CMAKE_SOURCE_DIR}/streaming)
@@ -42,3 +43,13 @@ target_include_directories(etherlink PRIVATE "$<TARGET_PROPERTY:protodrv_lib,INT
 target_link_libraries(etherlink LINK_PUBLIC protodrv_lib protodrv_lib_common streaming )
 add_dependencies(etherlink version)
 install(TARGETS etherlink DESTINATION bin)
+
+set(CPACK_PACKAGE_VERSION ${VERSION})
+set(CPACK_GENERATOR "RPM")
+set(CPACK_PACKAGE_NAME "remote-debug-for-intel-fpga")
+set(CPACK_PACKAGE_RELEASE 1)
+set(CPACK_PACKAGE_CONTACT "Tomas Hak <hak@cesnet.cz>")
+set(CPACK_PACKAGE_VENDOR "CESNET z. s. p. o.")
+set(CPACK_PACKAGING_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
+set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_PACKAGE_RELEASE}.${CMAKE_SYSTEM_PROCESSOR}")
+include(CPack)
